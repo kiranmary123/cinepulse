@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+<h2>All Feedbacks</h2>
+
+{% for f in feedbacks %}
+<div class="card">
+<p><strong>Movie:</strong> {{ f.movie }}</p>
+<p><strong>Theatre:</strong> {{ f.theatre }}</p>
+<p><strong>Rating:</strong> {{ f.rating }} ⭐</p>
+<p><strong>Feedback:</strong> {{ f.feedback }}</p>
+</div>
+{% else %}
+<p>No feedback submitted yet.</p>
+{% endfor %}
+
+</div>
+</body>
+</html>

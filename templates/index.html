@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CineWave</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container card">
+<h1>🎬 CineWave</h1>
+
+<form action="/login" method="POST">
+<input type="text" name="username" placeholder="Username" required>
+<input type="password" name="password" placeholder="Password" required>
+<button class="btn">Login</button>
+</form>
+
+<a href="/admin" class="btn">Admin Login</a>
+</div>
+
+</body>
+</html>
