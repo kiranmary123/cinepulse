@@ -8,7 +8,7 @@ app.secret_key = "cinemapulse-secret-key"
 feedbacks = []
 
 ADMIN_USERNAME = "admin"
-ADMIN_PASSWORD = "admin123
+ADMIN_PASSWORD = "admin123"
 
 def user_login_required(f):
     @wraps(f)
@@ -50,18 +50,24 @@ def dashboard():
 def feedback():
 
     movies = [
-        "Leo 2",
+        "Leo",
         "Kantara Chapter 1",
         "Game Changer",
-        "Salaar Part 2",
+        "Salaar",
         "Pushpa 2",
-        "Jailer 2",
-        "Kalki 2898 AD",
+        "Jailer",
+        "Kalki ",
         "Indian 2",
-        "Vikram 2"
+        "Vikram 2",
+        "Mersal",
+        "Mankatha",
+        "Coolie",
+        "Retro",
+        "Jana Nayagan",
+        "Idli Kadai"
     ]
 
-    theatres = ["PVR", "INOX", "AGS", "SPI"]
+    theatres = ["PVR", "INOX", "AGS", "SPI","Vetri Theatre","Rohini Silver Screens","Kamala Cinemas","Devi Cineplex"]
 
     if request.method == "POST":
         feedbacks.append({
