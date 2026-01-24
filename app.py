@@ -7,10 +7,7 @@ app.secret_key = "cinemapulse-secret-key"
 # Temporary in-memory storage
 feedbacks = []
 
-# Credentials
-USER_USERNAME = "kiran"
-USER_PASSWORD = "cinema"
-
+# ---------- Admin Credentials ----------
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "admin123"
 
@@ -38,18 +35,18 @@ def index():
 
 @app.route("/login", methods=["POST"])
 def login():
-    if (
-        request.form["username"] == USER_USERNAME
-        and request.form["password"] == USER_PASSWORD
-    ):
-        session["user"] = USER_USERNAME
-        return redirect(url_for("dashboard"))
-    return redirect(url_for("index"))
+    # ACCEPT ANY USERNAME AND PASSWORD
+    username = request.form.get("username")
+
+    # create session for everyone
+    session["user"] = username if username else "Guest"
+
+    return redirect(url_for("dashboard"))
 
 @app.route("/dashboard")
 @user_login_required
 def dashboard():
-    return render_template("dashboard.html")
+    return render_template("dashboard.html", user=session.get("user"))
 
 @app.route("/feedback", methods=["GET", "POST"])
 @user_login_required
@@ -71,6 +68,7 @@ def feedback():
 
     if request.method == "POST":
         feedbacks.append({
+            "user": session.get("user"),
             "movie": request.form["movie"],
             "theatre": request.form["theatre"],
             "rating": request.form["rating"],
@@ -107,3 +105,4 @@ def logout():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
