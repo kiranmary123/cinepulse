@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session,flash,jsonify
 from functools import wraps
 import uuid
 import boto3
+import os
+from boto3.dynamodb.conditions import key
 from botocore.exceptions import ClientError
 
 app = Flask(__name__)
@@ -9,24 +11,18 @@ app.secret_key = "cinemapulse-secret-key"
 
 # ---------- AWS CONFIG ----------
 REGION = "us-east-1"
-ENDPOINT = "http://localhost:4566"  # Use AWS endpoint or LocalStack for testing
+
 
 # DynamoDB Resource
 dynamodb = boto3.resource(
     "dynamodb",
-    region_name=REGION,
-    endpoint_url=ENDPOINT,
-    aws_access_key_id="test",
-    aws_secret_access_key="test"
+    region_name=REGION
 )
 
 # SNS Client
 sns = boto3.client(
     "sns",
-    region_name=REGION,
-    endpoint_url=ENDPOINT,
-    aws_access_key_id="test",
-    aws_secret_access_key="test"
+    region_name=REGION
 )
 
 # Tables
@@ -35,6 +31,16 @@ feedback_table = dynamodb.Table("Feedbacks")
 
 # SNS Topic ARN (replace with your topic ARN)
 SNS_TOPIC_ARN = "arn:aws:sns:us-east-1:000000000000:UserLoginTopic"
+
+def send_notification(subject, message):
+    try:
+        sns.publish(
+            TopicArn=SNS_TOPIC_ARN,
+            Subject=subject,
+            Message=message
+        )
+    except ClientError as e:
+        print(f"Error sending SNS notification: {e}")
 
 # ---------- Admin Credentials ----------
 ADMIN_USERNAME = "admin"
@@ -57,16 +63,6 @@ def admin_login_required(f):
         return f(*args, **kwargs)
     return wrapper
 
-# ---------- SNS Notification Helper ----------
-def send_notification(subject, message):
-    try:
-        sns.publish(
-            TopicArn=SNS_TOPIC_ARN,
-            Subject=subject,
-            Message=message
-        )
-    except ClientError as e:
-        print(f"Error sending SNS notification: {e}")
 
 # ---------- Routes ----------
 @app.route("/")
@@ -145,4 +141,4 @@ def logout():
 
 # ---------- Main ----------
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0',port=5000,debug=True)
