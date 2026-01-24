@@ -4,14 +4,12 @@ from functools import wraps
 app = Flask(__name__)
 app.secret_key = "cinemapulse-secret-key"
 
-# Temporary in-memory storage
+
 feedbacks = []
 
-# ---------- Admin Credentials ----------
 ADMIN_USERNAME = "admin"
-ADMIN_PASSWORD = "admin123"
+ADMIN_PASSWORD = "admin123
 
-# ---------- Decorators ----------
 def user_login_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
@@ -28,7 +26,6 @@ def admin_login_required(f):
         return f(*args, **kwargs)
     return wrapper
 
-# ---------- Routes ----------
 @app.route("/")
 def index():
     return render_template("index.html")
