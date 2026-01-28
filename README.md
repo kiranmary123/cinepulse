@@ -46,6 +46,7 @@ Styling: Custom CSS
 
 
 **📂 Project Structure**
+
 CinemaPulse/
 │
 ├── static/
