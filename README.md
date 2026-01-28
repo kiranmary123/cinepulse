@@ -27,8 +27,8 @@ View all user feedbacks in a dashboard
 Monitor movie ratings and comments
 
 
-**☁️ Cloud Features (AWS Version)
-**
+**☁️Cloud Features(AWS Version)**
+
 Stores users and feedback in Amazon DynamoDB
 
 Sends login notifications using Amazon SNS
