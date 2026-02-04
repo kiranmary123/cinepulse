@@ -30,7 +30,7 @@ users_table = dynamodb.Table("Users")
 feedback_table = dynamodb.Table("Feedbacks")
 
 # SNS Topic ARN (replace with your topic ARN)
-SNS_TOPIC_ARN = "arn:aws:sns:us-east-1:000000000000:UserLoginTopic"
+SNS_TOPIC_ARN = "arn:aws:sns:us-east-1:253490788901:aws_capstone_topic"
 
 def send_notification(subject, message):
     try:
