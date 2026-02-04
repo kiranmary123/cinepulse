@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session,flash,jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 from functools import wraps
 import uuid
 import boto3
@@ -11,7 +11,6 @@ app.secret_key = "cinemapulse-secret-key"
 
 # ---------- AWS CONFIG ----------
 REGION = "us-east-1"
-
 
 # DynamoDB Resource
 dynamodb = boto3.resource(
@@ -63,7 +62,6 @@ def admin_login_required(f):
         return f(*args, **kwargs)
     return wrapper
 
-
 # ---------- Routes ----------
 @app.route("/")
 def index():
@@ -76,17 +74,25 @@ def login():
 
     # Fetch user from DynamoDB
     res = users_table.get_item(Key={"username": username})
-    if "Item" in res and res["Item"]["password"] == password:
-        session["user"] = username
+    print("DynamoDB response:", res)  # Debug: check this in terminal
 
-        # SNS notification for login
-        send_notification(
-            "User Login",
-            f"User '{username}' has logged in successfully."
-        )
+    if "Item" in res:
+        stored_password = res["Item"].get("password", "")
+        if stored_password == password:
+            session["user"] = username
 
-        return redirect(url_for("dashboard"))
+            # SNS notification for login
+            send_notification(
+                "User Login",
+                f"User '{username}' has logged in successfully."
+            )
+            return redirect(url_for("dashboard"))
+        else:
+            print("Password mismatch for user:", username)
+    else:
+        print("User not found:", username)
 
+    flash("Invalid username or password. Please try again.")
     return redirect(url_for("index"))
 
 @app.route("/dashboard")
@@ -141,4 +147,4 @@ def logout():
 
 # ---------- Main ----------
 if __name__ == "__main__":
-    app.run(host='0.0.0.0',port=5000,debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
