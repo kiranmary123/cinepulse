@@ -3,7 +3,6 @@ from functools import wraps
 import uuid
 import boto3
 import os
-from boto3.dynamodb.conditions import key
 from botocore.exceptions import ClientError
 
 app = Flask(__name__)
